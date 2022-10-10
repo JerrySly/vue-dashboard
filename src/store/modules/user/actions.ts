@@ -2,7 +2,6 @@ import { ActionContext, ActionTree } from "vuex";
 import { RootState } from "../..";
 import { AppError, User, UserSettings } from "../../../models";
 import { getSettings, loginToAccount } from "../../../services/userService";
-import { system } from "../system";
 import { SystemActionTypes } from "../system/actions-types";
 import { UserActionsTypes } from "./actions-types";
 import { UserMutations } from "./mutations";
@@ -17,12 +16,12 @@ type AugmentedActionContext = {
 } & Omit<ActionContext<UserState, RootState>,"commit">
 
 export interface UserActions {
-    [UserActionsTypes.GET_USER]({commit}:AugmentedActionContext, login:string,password:string):void,
-    [UserActionsTypes.GET_USER_SETTINGS]({commit}:AugmentedActionContext, userId:string): void
+    [UserActionsTypes.GET_USER]({commit,dispatch}:AugmentedActionContext, payload:User):Promise<void>,
+    [UserActionsTypes.GET_USER_SETTINGS]({commit,dispatch}:AugmentedActionContext, userId:string): Promise<void>
 }
 
 export const actions: ActionTree<UserState,RootState> & UserActions = {
-    async [UserActionsTypes.GET_USER]({commit,dispatch},login,password){
+    async [UserActionsTypes.GET_USER]({commit,dispatch},{login,password}):Promise<void>{
         const result = await loginToAccount(login,password);
         if((result as User).login != undefined){
             commit(UserMutationTypes.SET_USER,result as User);  
@@ -31,7 +30,7 @@ export const actions: ActionTree<UserState,RootState> & UserActions = {
             await dispatch(SystemActionTypes.SET_ERROR, result as AppError )
         }
     },
-    async [UserActionsTypes.GET_USER_SETTINGS]({commit,dispatch},userId){
+    async [UserActionsTypes.GET_USER_SETTINGS]({commit,dispatch},userId):Promise<void>{
         const result = await getSettings(userId);
         if((result as UserSettings).userId != undefined)
             commit(UserMutationTypes.SET_SETTINGS,result as UserSettings);

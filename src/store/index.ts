@@ -1,16 +1,22 @@
 import { createStore } from "vuex";
-import { SystemState } from "./modules/system/state";
 import { UserState } from "./modules/user/state";
-import {user} from "./modules/user";
-import {system} from "./modules/system";
+import {user, UserStore} from "./modules/user";
+import {system, SystemStore} from "./modules/system";
+import { SystemState } from "./modules/system/state";
 export interface RootState {
     userState: UserState,
     systemState: SystemState
 }
 
-const store  = createStore({
+export type Store = UserStore<Pick<RootState,'userState'>> & SystemStore<Pick<RootState, 'systemState'>>
+
+export const store  = createStore({
     modules:{
         user,
         system
     }
 })
+
+export function useStore():Store {
+    return store as Store
+}
