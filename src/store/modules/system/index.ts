@@ -1,6 +1,6 @@
 import { state,SystemState } from "./state";
 import {CommitOptions, DispatchOptions, Module, Store as VuexStore } from "vuex"
-import { mutations,SystemMutations } from "./mutatuins";
+import { mutations,SystemMutations } from "./mutations";
 import { actions,SystemActions } from "./actions";
 import { RootState } from "../..";
 
@@ -9,7 +9,7 @@ export type SystemStore<S=SystemState> = Omit<VuexStore<S>,'getters' | "commit" 
     commit<K extends keyof SystemMutations, P extends Parameters<SystemMutations[K]>[1]>(
         key:K,
         payload: P,
-        oprions?: CommitOptions
+        options?: CommitOptions
     ):ReturnType<SystemMutations[K]>
 } & {
     dispatch<K extends keyof SystemActions> (

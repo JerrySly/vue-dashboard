@@ -16,13 +16,17 @@ type AugmentedActionContext = {
 } & Omit<ActionContext<UserState, RootState>,"commit">
 
 export interface UserActions {
-    [UserActionsTypes.GET_USER]({commit,dispatch}:AugmentedActionContext, payload:User):Promise<void>,
+    [UserActionsTypes.GET_USER]({commit,dispatch}:AugmentedActionContext, payload:{
+        login:string,
+        password: string
+    }):Promise<void>,
     [UserActionsTypes.GET_USER_SETTINGS]({commit,dispatch}:AugmentedActionContext, userId:string): Promise<void>
 }
 
 export const actions: ActionTree<UserState,RootState> & UserActions = {
     async [UserActionsTypes.GET_USER]({commit,dispatch},{login,password}):Promise<void>{
         const result = await loginToAccount(login,password);
+        console.log(result);
         if((result as User).login != undefined){
             commit(UserMutationTypes.SET_USER,result as User);  
         }

@@ -3,7 +3,7 @@ import { RootState } from "../.."
 import { AppError } from "../../../models"
 import { SystemActionTypes } from "./actions-types"
 import { SystemMutationTypes } from "./mutations-types"
-import { SystemMutations } from "./mutatuins"
+import { SystemMutations } from "./mutations"
 import { SystemState } from "./state"
 
 type AugmentedActionContext = {

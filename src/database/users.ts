@@ -1,7 +1,7 @@
 import database from "./db";
 import {collection,getDocs,addDoc} from "firebase/firestore";
 import { User } from "../models";
-import uuid from "uuid";
+import { v4 as uuidv4 } from 'uuid';
 
 export const getUser = async (login:string):Promise<User | null> =>{
     const users = collection(database,'users');
@@ -18,8 +18,9 @@ export const getUser = async (login:string):Promise<User | null> =>{
 
 export const createUser = async (login:string, password: string):Promise<User> => {
     const users = collection(database,'users');
+    console.log(uuidv4())
     await addDoc(users,{
-        userId: uuid.v1(),
+        userId: uuidv4(),
         login,
         password
     })

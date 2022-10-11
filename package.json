@@ -9,8 +9,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "aws-sdk": "^2.1231.0",
     "bcrypt": "^5.1.0",
     "firebase": "^9.10.0",
+    "mock-aws-s3": "^4.0.2",
+    "nock": "^13.2.9",
     "uuid": "^9.0.0",
     "vue": "^3.2.37",
     "vue-router": "^4.1.5",
