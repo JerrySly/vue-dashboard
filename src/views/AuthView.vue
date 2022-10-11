@@ -1,12 +1,12 @@
 <template>
   <div class="form form_centered">
-    <auth-form></auth-form>
-    <registration-form></registration-form>
+    <auth-form v-if="loginState" @to-singup="singUpDialog"></auth-form>
+    <registration-form v-if="singUpState" @to-login="loginDialog"></registration-form>
   </div>
 </template>
 
 <script setup lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref, Ref } from 'vue';
 import AuthForm from '../components/Forms/AuthForm.vue';
 import RegistrationForm from '../components/Forms/RegistrationForm.vue';
 const component = defineComponent({
@@ -15,7 +15,18 @@ const component = defineComponent({
     RegistrationForm
   }
 })
+const loginState:Ref<boolean> = ref(true);
+const singUpState:Ref<boolean> = ref(false);
 
+const loginDialog = () => {
+  singUpState.value = false;
+  loginState.value = true;
+}
+
+const singUpDialog = () => {
+  singUpState.value = true;
+  loginState.value = false;
+}
 
 </script>
 

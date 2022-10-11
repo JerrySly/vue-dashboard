@@ -16,13 +16,13 @@ export const getUser = async (login:string):Promise<User | null> =>{
     return result as User;
 }
 
-export const createUser = async (login:string, password: string):Promise<User> => {
+export const createUser = async (login:string, password: string,name: string):Promise<User> => {
     const users = collection(database,'users');
-    console.log(uuidv4())
     await addDoc(users,{
         userId: uuidv4(),
         login,
-        password
+        password,
+        name
     })
     const user = await getUser(login);
     return user as User;

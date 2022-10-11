@@ -3,14 +3,14 @@ import { getUserSettings } from "../database/usersSettings";
 import { comparePassword, hashPassword } from "../helper/hash";
 import { AppError, User, UserSettings } from "../models";
 
-export const createUser = async (login:string, password:string): Promise<User | AppError> => {
+export const createUser = async (login:string, password:string,name: string): Promise<User | AppError> => {
   const hashedPassword = await hashPassword(password);
   if (await isExist(login)) {
     return {
       message: "User with this username already exists",
     };
   }
-  const user = await createUser(login, hashedPassword);
+  const user = await createUser(login, hashedPassword,name);
   return user;
 };
 
@@ -25,6 +25,7 @@ export const loginToAccount = async (login:string,password:string):Promise<User|
         return {
             message: "Error in login or password" 
         }
+    console.log('User: ',user)
     const isPasswordsEqual = await comparePassword(password,user.password);
     if(isPasswordsEqual)
         return user;

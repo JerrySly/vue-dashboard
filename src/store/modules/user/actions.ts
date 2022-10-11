@@ -1,7 +1,7 @@
 import { ActionContext, ActionTree } from "vuex";
 import { RootState } from "../..";
 import { AppError, User, UserSettings } from "../../../models";
-import { getSettings, loginToAccount } from "../../../services/userService";
+import { getSettings, loginToAccount, createUser } from "../../../services/userService";
 import { SystemActionTypes } from "../system/actions-types";
 import { UserActionsTypes } from "./actions-types";
 import { UserMutations } from "./mutations";
@@ -20,7 +20,12 @@ export interface UserActions {
         login:string,
         password: string
     }):Promise<void>,
-    [UserActionsTypes.GET_USER_SETTINGS]({commit,dispatch}:AugmentedActionContext, userId:string): Promise<void>
+    [UserActionsTypes.GET_USER_SETTINGS]({commit,dispatch}:AugmentedActionContext, userId:string): Promise<void>,
+    [UserActionsTypes.CREATE_USER]({commit,dispatch}:AugmentedActionContext, payload:{
+        login:string,
+        password: string,
+        name: string
+    }): Promise<void>
 }
 
 export const actions: ActionTree<UserState,RootState> & UserActions = {
@@ -40,5 +45,8 @@ export const actions: ActionTree<UserState,RootState> & UserActions = {
             commit(UserMutationTypes.SET_SETTINGS,result as UserSettings);
         else
             await dispatch(SystemActionTypes.SET_ERROR, result as AppError )
+    },
+    async [UserActionsTypes.CREATE_USER]({commit,dispatch},{login,password,name}):Promise<void>{
+        const result = await createUser(login,password,name)
     }   
 }

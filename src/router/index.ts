@@ -7,7 +7,7 @@ const router = createRouter({
         {   path:"/",
             name: "Auth",
             component: () => import("../views/AuthView.vue")
-        }
+        },
     ]
 })
 
