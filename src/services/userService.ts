@@ -1,16 +1,17 @@
-import { getUser } from "../database/users";
+import { createUserInDb, getUser } from "../database/users";
 import { getUserSettings } from "../database/usersSettings";
 import { comparePassword, hashPassword } from "../helper/hash";
 import { AppError, User, UserSettings } from "../models";
 
 export const createUser = async (login:string, password:string,name: string): Promise<User | AppError> => {
   const hashedPassword = await hashPassword(password);
+  console.log('Hashed: ',hashedPassword)
   if (await isExist(login)) {
     return {
       message: "User with this username already exists",
     };
   }
-  const user = await createUser(login, hashedPassword,name);
+  const user = await createUserInDb(login, hashedPassword,name);
   return user;
 };
 

@@ -48,5 +48,7 @@ export const actions: ActionTree<UserState,RootState> & UserActions = {
     },
     async [UserActionsTypes.CREATE_USER]({commit,dispatch},{login,password,name}):Promise<void>{
         const result = await createUser(login,password,name)
+        if((result as AppError).message != undefined)
+            await dispatch(SystemActionTypes.SET_ERROR, result as AppError)
     }   
 }

@@ -16,7 +16,7 @@ export const getUser = async (login:string):Promise<User | null> =>{
     return result as User;
 }
 
-export const createUser = async (login:string, password: string,name: string):Promise<User> => {
+export const createUserInDb = async (login:string, password: string,name: string):Promise<User> => {
     const users = collection(database,'users');
     await addDoc(users,{
         userId: uuidv4(),
