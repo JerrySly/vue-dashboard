@@ -15,3 +15,8 @@
     font-size: 20px;
     cursor: pointer;
 }
+
+.header{
+    display: flex;
+    justify-content: center;
+}
