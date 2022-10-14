@@ -31,12 +31,6 @@ const singUpDialog = () => {
 </script>
 
 <style>
-.form{
-  padding-top: 200px;
-}
-.form_centered{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+
+
 </style>

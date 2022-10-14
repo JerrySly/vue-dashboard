@@ -12,3 +12,9 @@ export declare type UserSettings = {
     userId:string,
     backgroundColor: string
 }
+
+export declare type Project = {
+    name: string,
+    admins: Array<string>,
+    members: Array<string>
+}

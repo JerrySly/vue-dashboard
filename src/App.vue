@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { getUser } from "./database/users";
 import TheHeader from "./components/TheHeader.vue";
-  getUser('eugeale');
+import { useStore } from "./store";
+
+const store = useStore();
+const user = store.state.user.user;
 </script>
 
 <template>
-  <the-header></the-header>
+  <the-header v-if="user"></the-header>
   <router-view></router-view>
 </template>
 

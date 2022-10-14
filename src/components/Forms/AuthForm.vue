@@ -39,49 +39,5 @@ const toSingup = () =>{
 </script>
 
 <style>
-.card__head{
-  text-align: center;
-}
-.card__title{
-  font-size: 28px;
-  font-family: 'Noto Sans JP', sans-serif;
-  color: green;
-}
-.card__body{
-  display: flex;
-  flex-direction: column;
-  align-content: center;
-}
-.card__input{
-  font-size: 24px;
-  margin-top: 10px;
-}
-.card__input_size-m{
-  min-width:300px;
-  height: 40px;
-}
-.card__actions{
-  display: flex;
-  justify-content: space-around;
-  padding: 10px 0px;
-}
-.card__btn{ 
-  border-radius: 8px;
-  padding: 8px 10px;
-  border: none;
-}
-.btn_additional{
-  background: white;
-  color: green;
-}
-.btn_additional:hover{
-  color: rgb(0, 101, 0);
-}
-.btn_success{
-  background: green;
-  color: white;
-}
-.btn_success:hover{
-  background: rgb(0, 101, 0);
-}
+
 </style>

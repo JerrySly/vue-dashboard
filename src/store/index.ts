@@ -4,11 +4,11 @@ import {user, UserStore} from "./modules/user";
 import {system, SystemStore} from "./modules/system";
 import { SystemState } from "./modules/system/state";
 export interface RootState {
-    userState: UserState,
-    systemState: SystemState
+    user: UserState,
+    system: SystemState
 }
 
-export type Store = UserStore<Pick<RootState,'userState'>> & SystemStore<Pick<RootState, 'systemState'>>
+export type Store = UserStore<Pick<RootState,'user'>> & SystemStore<Pick<RootState, 'system'>>
 
 export const store  = createStore({
     modules:{

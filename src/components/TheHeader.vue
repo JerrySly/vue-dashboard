@@ -18,19 +18,11 @@
 </template>
 
 <script setup lang="ts">
-import { defineComponent } from "@vue/runtime-core";
 import IconCog from "./Icons/IconCog.vue";
 import IconFriends from "./Icons/IconFriends.vue";
 import IconList from "./Icons/IconList.vue";
 import IconPerson from "./Icons/IconPerson.vue";
-const component = defineComponent({
-  components: {
-    IconCog,
-    IconFriends,
-    IconList,
-    IconPerson,
-  },
-});
+
 </script>
 
 <style>
@@ -43,10 +35,13 @@ const component = defineComponent({
   border-radius: 50%; 
 }
 .header__nav{
-  max-width: 500px;
-  min-width: 300px;
+  background-color: white;
+  max-width: 800px;
+  min-width: 500px;
   display: flex;
   align-items: center;
   justify-content: space-around;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 </style>

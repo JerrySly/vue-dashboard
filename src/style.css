@@ -1,22 +1,108 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500&display=swap');
-.card{
-    padding: 20px;
-    background: white;
-    border-radius: 5px;
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500&display=swap");
+body {
+  padding: 0px;
+  margin: 0px;
+
+  background-image: url("./assets/default-background.jpg");
 }
 
-.input{
-    outline: none;
-    border-radius: 5px;
-    padding-left: 10px;
+/* Blocks */
+.card {
+  padding: 20px;
+  background: white;
+  border-radius: 5px;
+  box-shadow: 5px 5px 15px;
 }
 
-.btn{
-    font-size: 20px;
+.input {
+  outline: none;
+  border-radius: 5px;
+  padding-left: 10px;
+}
+
+.btn {
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+}
+.form{
+    padding-top: 200px;
+}
+
+/* Elements */
+
+.card__head {
+  text-align: center;
+}
+.card__title {
+  font-size: 28px;
+  font-family: "Noto Sans JP", sans-serif;
+  color: green;
+}
+.card__body {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+}
+.card__input {
+  font-size: 24px;
+  margin-top: 10px;
+}
+
+.card__actions {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0px;
+}
+.card__btn {
+  border-radius: 8px;
+  padding: 8px 10px;
+  border: none;
+}
+.form__item{
+  text-align: center;
+}
+.card__label{
+  font-size: 20px;
+  font-family: "Noto Sans JP", sans-serif;
+}
+
+/* Modification */
+.card__input_size-m {
+  min-width: 300px;
+  height: 40px;
+}
+
+.btn_additional {
+  background: white;
+  color: green;
+}
+.btn_additional:hover {
+  color: rgb(0, 101, 0);
+}
+.btn_success {
+  background: green;
+  color: white;
+}
+.btn_success:hover {
+  background: rgb(0, 101, 0);
+}
+.form_centered{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.card__input_labeled{
+  display: none;
+}
+.card__label_covering{
+    border: 1px solid rgb(0, 0, 0);
+    display: inline-block;
+    padding: 6px 36px;
     cursor: pointer;
-}
-
-.header{
-    display: flex;
-    justify-content: center;
+    border-radius: 8px;
 }
