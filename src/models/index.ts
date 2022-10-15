@@ -14,7 +14,9 @@ export declare type UserSettings = {
 }
 
 export declare type Project = {
+    id: string,
     name: string,
     admins: Array<string>,
-    members: Array<string>
+    members: Array<string>,
+    creator: string
 }
