@@ -1,8 +1,12 @@
 <template>
-  <div class="item">
-    <div class="item__header"></div>
-    <div class="item__body"></div>
-    <div class="item__actions"></div>
+  <div class="project">
+    <div class="project__header">
+      {{props.project.name}}
+    </div>
+    <div class="project__body">
+      <div></div>
+    </div>
+    <div class="project__actions"></div>
   </div>
 </template>
 
@@ -14,6 +18,6 @@ const props = defineProps<{
 }>()
 </script>
 
-<style>
+<style scoped>
 
 </style>
