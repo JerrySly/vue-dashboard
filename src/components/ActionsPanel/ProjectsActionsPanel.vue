@@ -1,8 +1,8 @@
 
 <template>
   <div>
-    <input type="text" v-model="search" class="input project-list__input">
-    <button @click="createNew" class="btn project-list__btn">Create new</button>
+    <input type="text" v-model="search" placeholder="Search" class="input project-list__input">
+    <button @click="createNew" class="btn btn_success project-list__btn">Create new</button>
   </div>
 </template>
 
@@ -18,6 +18,8 @@ const createNew = async () => {
 }
 </script>
 
-<style>
-
+<style scoped>
+.project-list__input{
+   font-size: 20px;
+}
 </style>

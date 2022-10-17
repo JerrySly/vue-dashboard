@@ -3,11 +3,12 @@ import { AppError, Project } from "../models";
 
 
 
-export const createProject = async (name: string, creator: string):Promise<Project | AppError> => {
+export const createProject = async (name: string,describe:string, creator: string):Promise<Project | AppError> => {
     let project = {
         id: "",
         name,
         creator,
+        describe,
         admins: [creator],
         members: []
     }

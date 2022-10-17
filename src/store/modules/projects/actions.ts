@@ -20,6 +20,7 @@ export interface ProjectsActions {
     { commit, dispatch }: AugmentedActionContext,
     payload: {
       name: string;
+      description: string;  
       creator: string;
     }
   ): Promise<Project | void>;
@@ -40,7 +41,7 @@ export interface ProjectsActions {
 export const actions: ActionTree<ProjectsState, RootState> & ProjectsActions =
   {
     async [ProjectsActionTypes.CREATE_NEW]({commit,dispatch},payload){
-        const result = await createProject(payload.name,payload.creator)
+        const result = await createProject(payload.name,payload.description,payload.creator)
         if((result as AppError).message != undefined){
             await dispatch(SystemActionTypes.SET_ERROR, result);
         }

@@ -12,6 +12,7 @@ app.directive('v-click-outside', {
         document.addEventListener('onclick', () => {
             binding.value();
         });
+        console.log('click outside')
     },
     unmounted(el,binding){
         el.removeEventListener('onclick',(event:MouseEvent) => {

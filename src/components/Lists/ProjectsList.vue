@@ -1,14 +1,15 @@
 <template>
   <div class="project-list">
     <div class="project-list__header">
-      <projects-actions-panel @create-open="openCreateDialog"></projects-actions-panel>
+      <div class="project-list__title">Projects</div>
+      <projects-actions-panel class="project-list__actions" @create-open="openCreateDialog"></projects-actions-panel>
     </div>
     <div v-if="projects && projects.length>0">
       <div class="project-list__item" v-for="project in projects" :key="project.id">
         <project-list-item :project="project"></project-list-item>
       </div>
     </div>
-    <create-project-dialog @close="closeCreateDialog"></create-project-dialog>
+    <create-project-dialog class="create-project-dialog"  v-if="openDialogView" @close="closeCreateDialog"></create-project-dialog>
   </div>
 </template>
 
@@ -27,11 +28,13 @@ let user:User;
 let projects: Ref<Array<Project>>;
 let openDialogView: Ref<boolean> = ref(false);
 
-  onMounted(() => {
+onMounted(() => {
   store = useStore();
   user = store.state.user.user as User;
-  store.dispatch<ProjectsActionTypes.GET_MY_PROJECTS>(ProjectsActionTypes.GET_MY_PROJECTS, {userId:user.userId});
+  if(user){
+    store.dispatch<ProjectsActionTypes.GET_MY_PROJECTS>(ProjectsActionTypes.GET_MY_PROJECTS, {userId:user.userId});
   projects.value = store.state.projects.myProjects;
+  }
 })
 
 const openCreateDialog = () => {
@@ -44,5 +47,23 @@ const closeCreateDialog = () => {
 </script>
 
 <style>
-
+.project-list{
+  margin:auto;
+  max-width: 600px;
+  margin-top: 20px;
+}
+.project-list__title{
+  font-size: 28px;
+  font-family: "Noto Sans JP", sans-serif;
+  color: green;
+  text-align: center;
+}
+.project-list__actions{
+  display: flex;
+  justify-content: space-between;
+  margin-top:20px;
+}
+.create-project-dialog{
+  width: 400px;
+}
 </style>
