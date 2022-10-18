@@ -1,46 +1,135 @@
 <template>
-   <div class="card">
+  <div class="card card_sing-up">
     <div class="card__head">
       <p class="card__title">SingUp</p>
     </div>
     <div class="card__body">
-      <input type="login" v-model="login" placeholder="Login" class="input card__input card__input_size-m" />
-      <input type="login" v-model="name" placeholder="Your nickname" class="input card__input card__input_size-m" />
-      <input type="password" placeholder="Password" v-model="password" class="input card__input card__input_size-m" />
-      <input type="password" v-model="confirmPassword" placeholder="Confirm password" class="input card__input card__input_size-m" />
+      <input
+        type="login"
+        v-model="singUpForm.login"
+        placeholder="Login"
+        class="input card__input card__input_size-m"
+      />
+      <div class="error card__error">
+        <div
+          class="error__message"
+          v-for="(error, index) in validator.login.$silentErrors"
+          :key="index"
+        >
+          {{ error.$message }}
+        </div>
+      </div>
+      <input
+        type="login"
+        v-model="singUpForm.name"
+        placeholder="Your nickname"
+        class="input card__input card__input_size-m"
+      />
+      <div class="error card__error">
+        <div
+          class="error__message"
+          v-for="(error, index) in validator.name.$silentErrors"
+          :key="index"
+        >
+          {{ error.$message }}
+        </div>
+      </div>
+      <input
+        type="password"
+        placeholder="Password"
+        v-model="singUpForm.password"
+        class="input card__input card__input_size-m"
+      />
+      <div class="error card__error">
+        <div
+          class="error__message"
+          v-for="(error, index) in validator.password.$silentErrors"
+          :key="index"
+        >
+          {{ error.$message }}
+        </div>
+      </div>
+      <input
+        type="password"
+        v-model="singUpForm.confirmPassword"
+        placeholder="Confirm password"
+        class="input card__input card__input_size-m"
+      />
+      <div class="error card__error">
+        <div
+          class="error__message"
+          v-for="(error, index) in validator.confirmPassword.$silentErrors"
+          :key="index"
+        >
+          {{ error.$message }}
+        </div>
+      </div>
     </div>
     <div class="card__actions">
       <button class="btn card__btn btn_additional" @click="back">Back</button>
-      <button class="btn card__btn btn_success" @click="singUp">SingUp</button>
+      <button class="btn card__btn btn_success" @click="check">SingUp</button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "@vue/reactivity";
-import { Ref } from "vue";
+import { reactive } from "@vue/reactivity";
+import { computed } from "@vue/runtime-core";
+import useVuelidate from "@vuelidate/core";
+import { helpers, required, sameAs } from "@vuelidate/validators";
 import { useStore } from "../../store";
 import { UserActionsTypes } from "../../store/modules/user/actions-types";
-
-const login: Ref<string> = ref("");
-const name: Ref<string> = ref("");
-const password: Ref<string> = ref("");
-const confirmPassword: Ref<string> = ref("");
+import { password as passwordRule, equal } from "../../vuelidate/customRules";
 
 const store = useStore();
-const emits = defineEmits(["toLogin"])
+const emits = defineEmits(["toLogin"]);
 
+const singUpForm: {
+  login: string;
+  name: string;
+  password: string;
+  confirmPassword: string;
+} = reactive({
+  login: "",
+  name: "",
+  password: "",
+  confirmPassword: "",
+});
+
+const formRules = computed(() => {
+  return {
+    login: { required },
+    name: { required },
+    password: {
+      required,
+      passwordRule: helpers.withMessage(
+        "Password must contain one uppercase symbol, one lowercase symbol, one special symbol and one number",
+        passwordRule
+      ),
+    },
+    confirmPassword: { required, sameAs:sameAs(singUpForm.password)  },
+  };
+});
+
+const validator = useVuelidate(formRules, singUpForm);
 const singUp = async () => {
-   await store.dispatch<UserActionsTypes.CREATE_USER>(UserActionsTypes.CREATE_USER,{
-    login:login.value,
-    password:password.value,
-    name: name.value})
-}
+  if (await validator.value.$validate())
+    await store.dispatch<UserActionsTypes.CREATE_USER>(
+      UserActionsTypes.CREATE_USER,
+      {
+        login: singUpForm.login,
+        password: singUpForm.password,
+        name: singUpForm.name,
+      }
+    );
+};
+const check = () => {
+  console.log(singUpForm.password);
+};
 const back = () => {
-    emits("toLogin");
-}
+  emits("toLogin");
+};
 </script>
 
 <style>
-
 </style>

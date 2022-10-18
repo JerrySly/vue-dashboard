@@ -18,7 +18,6 @@ body {
   outline: none;
   border-radius: 5px;
   padding-left: 10px;
-  border: none;
 }
 
 .btn {
@@ -46,6 +45,11 @@ body {
   border-radius: 8px;
   box-shadow: 1px 1px 10px; 
   padding: 20px 15px;
+}
+.error{
+  color: rgba(255, 0, 0, 0.681);
+  font-size: 16px;
+  font-family: "Noto Sans JP", sans-serif;
 }
 
 /* Elements */
@@ -98,6 +102,9 @@ body {
   display: flex;
   justify-content: space-around;
 }
+.card__error{
+  text-align: center;
+}
 /* Modification */
 .card__input_size-m {
   min-width: 300px;
@@ -132,4 +139,10 @@ body {
     padding: 6px 36px;
     cursor: pointer;
     border-radius: 8px;
+}
+.card_auth{
+  width: 450px;
+}
+.card_sing-up{
+  width: 450px;
 }
