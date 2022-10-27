@@ -4,21 +4,20 @@ import App from './App.vue'
 import router from './router';
 
 const app = createApp(App);
-app.directive('v-click-outside', {
+app.directive('click-outside', {
     mounted(el,binding){
-        el.addEventListener('onclick', (event:MouseEvent) => {
+        el.addEventListener('click', (event:MouseEvent) => {
             event.stopPropagation();
         })
-        document.addEventListener('onclick', () => {
+        document.addEventListener('click', () => {
             binding.value();
         });
-        console.log('click outside')
     },
     unmounted(el,binding){
-        el.removeEventListener('onclick',(event:MouseEvent) => {
+        el.removeEventListener('click',(event:MouseEvent) => {
             event.stopPropagation();
         })
-        document.removeEventListener('onclick',() => {
+        document.removeEventListener('click',() => {
             binding.value();
         })
     }

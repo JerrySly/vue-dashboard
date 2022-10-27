@@ -14,7 +14,7 @@ type AugmentedActionContext = {
 } & Omit<ActionContext<SystemState, RootState>,"commit">
 
 export interface SystemActions {
-    [SystemActionTypes.SET_ERROR]({commit}:AugmentedActionContext, error:AppError):void
+    [SystemActionTypes.SET_ERROR]({commit}:AugmentedActionContext, error:AppError|null):void
 }
 
 export const actions: ActionTree<SystemState,RootState> & SystemActions = {

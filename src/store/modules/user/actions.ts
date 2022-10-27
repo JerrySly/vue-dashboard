@@ -31,7 +31,7 @@ export interface UserActions {
 export const actions: ActionTree<UserState,RootState> & UserActions = {
     async [UserActionsTypes.GET_USER]({commit,dispatch},{login,password}):Promise<void>{
         const result = await loginToAccount(login,password);
-        console.log(result);
+        console.log('Geting result:', result);
         if((result as User).login != undefined){
             commit(UserMutationTypes.SET_USER,result as User);  
         }
@@ -50,5 +50,9 @@ export const actions: ActionTree<UserState,RootState> & UserActions = {
         const result = await createUser(login,password,name)
         if((result as AppError).message != undefined)
             await dispatch(SystemActionTypes.SET_ERROR, result as AppError)
+        if((result as User).login != undefined){
+            const user = await dispatch(UserActionsTypes.GET_USER, result as User)
+            commit(UserMutationTypes.SET_USER, user);
+        }
     }   
 }

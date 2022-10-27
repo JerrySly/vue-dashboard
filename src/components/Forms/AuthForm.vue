@@ -38,15 +38,20 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, Ref, ref } from "@vue/reactivity";
+import { reactive } from "@vue/reactivity";
 import { useStore } from "../../store";
 import { UserActionsTypes } from "../../store/modules/user/actions-types";
 import { useVuelidate } from "@vuelidate/core";
 import { helpers, required } from "@vuelidate/validators";
 import { password as passwordRule } from "../../vuelidate/customRules";
-const emits = defineEmits(["toSingup"]);
+import { useRouter } from "vue-router";
+import { computed } from "@vue/runtime-core";
+import { state } from "../../store/modules/user/state";
 
+const emits = defineEmits(["toSingup"]);
 const store = useStore();
+const router = useRouter();
+
 
 const form: { login: string; password: string } = reactive({
   login: "",
@@ -63,14 +68,19 @@ const formRules = {
     ),
   },
 };
+const user = computed(()=>{
+  return state.user;
+})
 const validator = useVuelidate(formRules,form);
 const logIn = async () => {
-  const validValue = validator.value;
-  if(validValue.$errors.length<1 && validValue.$silentErrors.length<1)
+  if(await validator.value.$validate()){
     await store.dispatch<UserActionsTypes.GET_USER>(UserActionsTypes.GET_USER, {
       login: form.login,
       password: form.password,
     });
+    if(user.value)
+      router.push({name:'List'});
+  }
 };
 const toSingup = () => {
   emits("toSingup");

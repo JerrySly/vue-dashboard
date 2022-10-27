@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from '@vue/runtime-core';
+import { computed, onMounted, ref } from '@vue/runtime-core';
 import { Ref } from 'vue';
 import { Project, User } from '../../models';
 import { Store, useStore } from '../../store';
@@ -22,18 +22,21 @@ import { ProjectsActionTypes } from '../../store/modules/projects/actions-types'
 import ProjectListItem  from '../ListItems/ProjectListItem.vue';
 import CreateProjectDialog from '../Dialogs/CreateProjectDialog.vue';
 import ProjectsActionsPanel from '../ActionsPanel/ProjectsActionsPanel.vue';
+import { state } from '../../store/modules/user/state';
 
 let store:Store;
-let user:User;
 let projects: Ref<Array<Project>>;
 let openDialogView: Ref<boolean> = ref(false);
 
+let user = computed(()=>{
+  return state.user;
+})
+
 onMounted(() => {
   store = useStore();
-  user = store.state.user.user as User;
   if(user){
-    store.dispatch<ProjectsActionTypes.GET_MY_PROJECTS>(ProjectsActionTypes.GET_MY_PROJECTS, {userId:user.userId});
-  projects.value = store.state.projects.myProjects;
+    store.dispatch<ProjectsActionTypes.GET_MY_PROJECTS>(ProjectsActionTypes.GET_MY_PROJECTS, {userId:user.value?.userId as string});
+    projects.value = store.state.projects.myProjects;
   }
 })
 

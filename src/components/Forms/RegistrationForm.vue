@@ -77,12 +77,15 @@ import { reactive } from "@vue/reactivity";
 import { computed } from "@vue/runtime-core";
 import useVuelidate from "@vuelidate/core";
 import { helpers, required, sameAs } from "@vuelidate/validators";
+import { useRouter } from "vue-router";
 import { useStore } from "../../store";
 import { UserActionsTypes } from "../../store/modules/user/actions-types";
+import { state } from "../../store/modules/user/state";
 import { password as passwordRule, equal } from "../../vuelidate/customRules";
 
 const store = useStore();
 const emits = defineEmits(["toLogin"]);
+const router = useRouter();
 
 const singUpForm: {
   login: string;
@@ -110,10 +113,12 @@ const formRules = computed(() => {
     confirmPassword: { required, sameAs:sameAs(singUpForm.password)  },
   };
 });
-
+const user = computed(()=>{
+  return state.user;
+})
 const validator = useVuelidate(formRules, singUpForm);
 const singUp = async () => {
-  if (await validator.value.$validate())
+  if (await validator.value.$validate()){
     await store.dispatch<UserActionsTypes.CREATE_USER>(
       UserActionsTypes.CREATE_USER,
       {
@@ -122,6 +127,9 @@ const singUp = async () => {
         name: singUpForm.name,
       }
     );
+    if(user)
+      router.push({name:'List'})
+  }
 };
 const check = () => {
   console.log(singUpForm.password);
