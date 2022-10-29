@@ -3,10 +3,12 @@ import { getUser } from "./database/users";
 import TheHeader from "./components/TheHeader.vue";
 import { useStore } from "./store";
 import ErrorDialog from "./components/Dialogs/ErrorDialog.vue";
-import { computed, ref, Ref } from "@vue/runtime-core";
+import { computed, onMounted, ref, Ref } from "@vue/runtime-core";
 import { SystemMutationTypes } from "./store/modules/system/mutations-types";
 import { AppError } from "./models";
 import { SystemActionTypes } from "./store/modules/system/actions-types";
+import { UserMutationTypes } from "./store/modules/user/mutations-type";
+import router from "./router";
 const store = useStore();
 const user = computed(() => {
   return store.state.user.user;
@@ -17,7 +19,15 @@ const error = computed(() => {
 const clearError = () => {
   store.dispatch<SystemActionTypes.SET_ERROR>(SystemActionTypes.SET_ERROR,null);
 }
-console.log(store)
+const setUserFromLocal = () => {
+  const localUser = JSON.parse(localStorage.getItem('user') as string);
+  store.commit(UserMutationTypes.SET_USER,localUser);
+}
+onMounted(()=>{
+  setUserFromLocal();
+  if(user.value)
+    router.push({name:'List'}) 
+})
 </script>
 
 <template>

@@ -27,10 +27,11 @@ export const loginToAccount = async (login:string,password:string):Promise<User|
         return {
             message: "Error in login or password" 
         }
-    console.log('User: ',user)
     const isPasswordsEqual = await comparePassword(password,user.password);
-    if(isPasswordsEqual)
+    if(isPasswordsEqual){
+        saveUser(user);
         return user;
+    }
     return {
         message: "Error in login or password" 
     }
@@ -43,5 +44,12 @@ export const getSettings =async (userId:string):Promise<UserSettings | AppError>
       message: "Settings not found"
     }
   return settings;
+}
+export const logOut = () => {
+  localStorage.removeItem('user');
+}
+
+const saveUser = (user:User) => {
+  localStorage.setItem('user', JSON.stringify(user));
 }
 

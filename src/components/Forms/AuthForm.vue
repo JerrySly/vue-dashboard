@@ -47,7 +47,7 @@ import { password as passwordRule } from "../../vuelidate/customRules";
 import { useRouter } from "vue-router";
 import { computed } from "@vue/runtime-core";
 import { state } from "../../store/modules/user/state";
-
+import {} from "../../services/userService";
 const emits = defineEmits(["toSingup"]);
 const store = useStore();
 const router = useRouter();
@@ -78,8 +78,9 @@ const logIn = async () => {
       login: form.login,
       password: form.password,
     });
-    if(user.value)
+    if(user.value){
       router.push({name:'List'});
+    }
   }
 };
 const toSingup = () => {
