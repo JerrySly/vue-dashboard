@@ -1,5 +1,5 @@
 <template>
-  <div class="dialog" @click-outside="() => close">
+  <div class="dialog" v-click-outside="close">
     <div class="dialog__header">
         Create project
     </div>
@@ -16,6 +16,7 @@
 
 <script setup lang="ts">
 import { ref } from "@vue/reactivity";
+import { emit } from "process";
 import { computed, onMounted, Ref } from "vue";
 import { User } from "../../models";
 import { useStore } from "../../store";
@@ -24,23 +25,30 @@ import { state } from "../../store/modules/user/state";
 
 let name: Ref<string> = ref("");
 let describe: Ref<string> = ref("");
+let userId:Ref<string> = ref("");
 
-const emits = defineEmits(["close"])
+
+const emits = defineEmits(["close","create"])
 const store = useStore();
-let userId:string;
-onMounted(()=>{
-  if(store.state.user)
-    userId = (store.state.user as User).userId
-  else
-    userId = ""
+
+const user = computed(():User => {
+  return store.state.user.user as User;
 })
+onMounted(()=>{
+  if(user.value)
+    userId.value = user.value.userId
+})
+
 const create = async () => {
-  if(userId)
+  if(userId.value && name.value){
     store.dispatch<ProjectsActionTypes.CREATE_NEW>(ProjectsActionTypes.CREATE_NEW, {
       name:name.value,
       description: describe.value,
-      creator: userId
+      creator: userId.value
     })
+    emits('create');
+    close();
+  }
 }
 const close = () =>{
   emits('close');

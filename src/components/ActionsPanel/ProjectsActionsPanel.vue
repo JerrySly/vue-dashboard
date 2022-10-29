@@ -13,7 +13,8 @@ import { ref } from "@vue/reactivity";
 const emits = defineEmits(['createOpen'])
 
 let search:Ref<string> = ref("") 
-const createNew = async () => {
+const createNew = (event:MouseEvent) => {
+  event.stopPropagation();
     emits('createOpen');
 }
 </script>

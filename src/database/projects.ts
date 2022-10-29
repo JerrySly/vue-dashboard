@@ -36,8 +36,7 @@ export const getProjects = async (creator:string): Promise<Array<Project> | null
         return null;
     const collectionDocs = await getDocs(dbCollection);
     const docs = collectionDocs.docs.map(x=>x.data())
-    const result = docs.filter(x=>(x as Project).admins.includes(creator) 
-    || (x as Project).members.includes(creator))
+    const result = docs.filter(x=>((x as Project).admins && (x as Project).admins.indexOf(creator) != -1))
 
     return result.map(x=>x as Project);
 

@@ -2,14 +2,14 @@
   <div class="project-list">
     <div class="project-list__header">
       <div class="project-list__title">Projects</div>
-      <projects-actions-panel class="project-list__actions" @create-open="openCreateDialog"></projects-actions-panel>
+      <projects-actions-panel class="project-list__actions" @createOpen="openDialogView = true"></projects-actions-panel>
     </div>
     <div v-if="projects && projects.length>0">
       <div class="project-list__item" v-for="project in projects" :key="project.id">
         <project-list-item :project="project"></project-list-item>
       </div>
     </div>
-    <create-project-dialog class="create-project-dialog"  v-if="openDialogView" @close="closeCreateDialog"></create-project-dialog>
+    <create-project-dialog class="create-project-dialog" @create="updateList"  v-if="openDialogView" @close="openDialogView = false"></create-project-dialog>
   </div>
 </template>
 
@@ -24,9 +24,9 @@ import CreateProjectDialog from '../Dialogs/CreateProjectDialog.vue';
 import ProjectsActionsPanel from '../ActionsPanel/ProjectsActionsPanel.vue';
 import { state } from '../../store/modules/user/state';
 
-let store:Store;
-let projects: Ref<Array<Project>>;
-let openDialogView: Ref<boolean> = ref(false);
+let store:Store = useStore();
+let projects: Ref<Array<Project>> = ref([]);
+let openDialogView: Ref<Boolean> = ref(false);
 
 let user = computed(()=>{
   return state.user;
@@ -34,18 +34,13 @@ let user = computed(()=>{
 
 onMounted(() => {
   store = useStore();
-  if(user){
-    store.dispatch<ProjectsActionTypes.GET_MY_PROJECTS>(ProjectsActionTypes.GET_MY_PROJECTS, {userId:user.value?.userId as string});
-    projects.value = store.state.projects.myProjects;
-  }
+  if(user)
+    updateList();
 })
 
-const openCreateDialog = () => {
-  openDialogView.value = true;
-}
-
-const closeCreateDialog = () => {
-  openDialogView.value = false;
+const updateList = () =>{
+  store.dispatch<ProjectsActionTypes.GET_MY_PROJECTS>(ProjectsActionTypes.GET_MY_PROJECTS, {userId:user.value?.userId as string});
+  projects.value = store.state.projects.myProjects;
 }
 </script>
 
