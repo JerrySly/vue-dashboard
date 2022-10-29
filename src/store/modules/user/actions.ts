@@ -50,9 +50,8 @@ export const actions: ActionTree<UserState,RootState> & UserActions = {
         const result = await createUser(login,password,name)
         if((result as AppError).message != undefined)
             await dispatch(SystemActionTypes.SET_ERROR, result as AppError)
-        if((result as User).login != undefined){
-            const user = await dispatch(UserActionsTypes.GET_USER, result as User)
-            commit(UserMutationTypes.SET_USER, user);
+        else{
+            const user = await dispatch(UserActionsTypes.GET_USER, {login,password})
         }
     }   
 }

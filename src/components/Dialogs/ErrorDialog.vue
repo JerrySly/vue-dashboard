@@ -13,7 +13,6 @@
 
 <script setup lang="ts">
 import { AppError } from '../../models';
-import { useStore } from '../../store';
 const props = defineProps<{
   error: AppError
 }>()

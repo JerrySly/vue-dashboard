@@ -67,7 +67,7 @@
     </div>
     <div class="card__actions">
       <button class="btn card__btn btn_additional" @click="back">Back</button>
-      <button class="btn card__btn btn_success" @click="check">SingUp</button>
+      <button class="btn card__btn btn_success" @click="singUp">SingUp</button>
     </div>
   </div>
 </template>
@@ -119,20 +119,18 @@ const user = computed(()=>{
 const validator = useVuelidate(formRules, singUpForm);
 const singUp = async () => {
   if (await validator.value.$validate()){
-    await store.dispatch<UserActionsTypes.CREATE_USER>(
+    store.dispatch<UserActionsTypes.CREATE_USER>(
       UserActionsTypes.CREATE_USER,
       {
         login: singUpForm.login,
         password: singUpForm.password,
         name: singUpForm.name,
       }
-    );
-    if(user)
-      router.push({name:'List'})
+    ).then(()=>{
+      if(user.value)
+        router.push({name:'List'})
+    })
   }
-};
-const check = () => {
-  console.log(singUpForm.password);
 };
 const back = () => {
   emits("toLogin");

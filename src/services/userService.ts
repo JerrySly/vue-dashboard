@@ -4,6 +4,7 @@ import { comparePassword, hashPassword } from "../helper/hash";
 import { AppError, User, UserSettings } from "../models";
 
 export const createUser = async (login:string, password:string,name: string): Promise<User | AppError> => {
+  console.log('Create', login)
   const hashedPassword = await hashPassword(password);
   console.log('Hashed: ',hashedPassword)
   if (await isExist(login)) {

@@ -7,11 +7,8 @@ export const getUser = async (login:string):Promise<User | null> =>{
     const users = collection(database,'users');
     const snapshot = await getDocs(users);
     const list = snapshot.docs.map(x=>x.data());
-    console.log(snapshot.docs)
-    console.log(list);
     let result = list.find(x=>x.login === login);
-    console.log(result);
-    if(result == null)
+    if(!result)
         return null
     return result as User;
 }
