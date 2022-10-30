@@ -1,7 +1,8 @@
 import database, { getEntityById } from "./db";
-import {collection,getDocs,addDoc, getDoc} from "firebase/firestore";
+import {collection,getDocs,addDoc, getDoc, deleteDoc} from "firebase/firestore";
 import { v4 as uuidv4 } from 'uuid';
 import { AppError, Project } from "../models";
+import { x64 } from "crypto-js";
 
 export const getProject = async (projectId: string):Promise<Project|null> => {
     return await getEntityById('projects',projectId);
@@ -30,14 +31,25 @@ export const  createDbProject = async (project:Project):Promise<Project | AppErr
     
 }
 
-export const getProjects = async (creator:string): Promise<Array<Project> | null> => {
+export const getProjects = async (memberId:string): Promise<Array<Project> | null> => {
     const dbCollection = collection(database,'projects');
     if(!dbCollection)
         return null;
     const collectionDocs = await getDocs(dbCollection);
     const docs = collectionDocs.docs.map(x=>x.data())
-    const result = docs.filter(x=>((x as Project).admins && (x as Project).admins.indexOf(creator) != -1))
+    const result = docs.filter(x=>((x as Project).admins && (x as Project).admins.indexOf(memberId) != -1))
 
     return result.map(x=>x as Project);
 
+}
+
+export const deleteDbProject = async (projectId:string): Promise<void | null> => {
+    const dbCollection = collection(database,'projects');
+    if(!dbCollection)
+        return null;
+    const collectionDocs = await getDocs(dbCollection);
+    const docForDelete = collectionDocs.docs.filter(x=>(x.data() as Project).id == projectId)[0];
+    if(!docForDelete)
+        return null;
+    await deleteDoc(docForDelete.ref);  
 }

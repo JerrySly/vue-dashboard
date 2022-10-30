@@ -1,4 +1,4 @@
-import { createDbProject, getProject, getProjects } from "../database/projects";
+import { createDbProject, deleteDbProject, getProject, getProjects } from "../database/projects";
 import { AppError, Project } from "../models";
 
 
@@ -31,4 +31,13 @@ export const getProjectById = async (projectId: string): Promise<Project | AppEr
             message: "Project not found"
         }
     return result as Project;
+}
+
+export const deleteProject = async(projectId:string):Promise<void | AppError> =>{
+    const result = await deleteDbProject(projectId);
+    if(result === null)
+        return {
+            message: 'Project not founded'
+        }
+    
 }

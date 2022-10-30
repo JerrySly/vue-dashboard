@@ -2,7 +2,7 @@
 body {
   padding: 0px;
   margin: 0px;
-
+  font-family: "Noto Sans JP", sans-serif;
   background-image: url("./assets/default-background.jpg");
 }
 
@@ -28,6 +28,10 @@ body {
   border: none;
 }
 
+.action{
+  cursor: pointer;
+}
+
 .header {
   display: flex;
   justify-content: center;
@@ -49,7 +53,7 @@ body {
 .error{
   color: rgba(255, 0, 0, 0.681);
   font-size: 16px;
-  font-family: "Noto Sans JP", sans-serif;
+  
 }
 
 /* Elements */

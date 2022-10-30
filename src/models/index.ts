@@ -18,5 +18,6 @@ export declare type Project = {
     name: string,
     admins: Array<string>,
     members: Array<string>,
-    creator: string
+    creator: string,
+    describe: string
 }
