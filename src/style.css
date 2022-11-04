@@ -53,7 +53,9 @@ body {
 .error{
   color: rgba(255, 0, 0, 0.681);
   font-size: 16px;
-  
+}
+.popup{
+  position: absolute;
 }
 
 /* Elements */

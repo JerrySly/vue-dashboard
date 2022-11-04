@@ -1,4 +1,3 @@
-import { Project } from "../../../models";
 
 export interface ProjectsState {
     currentProject: Project | null,

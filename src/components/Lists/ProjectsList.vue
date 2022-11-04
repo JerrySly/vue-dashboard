@@ -5,6 +5,7 @@
       <projects-actions-panel
         class="project-list__actions"
         @createOpen="openDialogView = true"
+        @search="searchProjects"
       ></projects-actions-panel>
     </div>
     <div v-if="projects && projects.length > 0">
@@ -68,6 +69,12 @@ const updateList = async () => {
   );
   projects.value = store.state.projects.myProjects;
 };
+const searchProjects = (searchString:string) => {
+  if(searchString)
+    projects.value = store.state.projects.myProjects.filter(x=>x.name.includes(searchString));
+  else
+    projects.value = store.state.projects.myProjects;
+}
 const prepareToDelete = (projectId: string) => {
   deletingProject.value = projectId;
   openDeleteView.value = true;

@@ -9,6 +9,7 @@ import { AppError } from "./models";
 import { SystemActionTypes } from "./store/modules/system/actions-types";
 import { UserMutationTypes } from "./store/modules/user/mutations-type";
 import router from "./router";
+import { TagActionTypes } from "./store/modules/tags/actions-types";
 const store = useStore();
 const user = computed(() => {
   return store.state.user.user;
@@ -23,8 +24,15 @@ const setUserFromLocal = () => {
   const localUser = JSON.parse(localStorage.getItem('user') as string);
   store.commit(UserMutationTypes.SET_USER,localUser);
 }
+const  loadStartData = async () =>{
+  await store.dispatch(TagActionTypes.GET_TAGS,
+  {
+    userId: user.value?.userId as String
+  });
+}
 onMounted(()=>{
   setUserFromLocal();
+  loadStartData();
   if(user.value)
     router.push({name:'List'}) 
 })
