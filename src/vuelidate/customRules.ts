@@ -6,3 +6,7 @@ export const password = (value:string) => {
 } 
 
 export const equal = (param:string) => (value:string) => !helpers.req(value) && value === param;
+
+export const existed = (param:Array<string>) => (value:string):boolean => {
+    return !param.includes(value);
+}
