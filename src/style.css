@@ -59,6 +59,14 @@ button{
 .popup{
   position: absolute;
 }
+.tag{
+  font-size: 15px;
+  display: flex;
+}
+.tags{
+  display: flex;
+  justify-content: space-around;
+}
 
 /* Elements */
 
@@ -116,7 +124,15 @@ button{
 .card__error{
   text-align: center;
 }
+.tags__item{
+  padding: 3px 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
 /* Modification */
+.tags__item_selected{
+  border: 2px solid rgba(0, 0, 0, 0.636);
+}
 .card__input_size-m {
   min-width: 300px;
   height: 40px;

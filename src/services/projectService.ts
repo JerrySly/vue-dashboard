@@ -1,4 +1,4 @@
-import { createDbProject, deleteDbProject, getProject, getProjects } from "../database/projects";
+import { createDbProject, deleteDbProject, getProject, getProjects, updateDbProject } from "../database/projects";
 import { AppError, Project } from "../models";
 
 
@@ -40,4 +40,12 @@ export const deleteProject = async(projectId:string):Promise<void | AppError> =>
             message: 'Project not founded'
         }
     
+}
+export const updateProject = async(project:Project):Promise<Project | AppError> => {
+    const result = await updateDbProject(project);
+    if(result === null)
+        return {
+            message: 'Error on update'
+        }
+    return result
 }

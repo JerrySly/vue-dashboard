@@ -1,6 +1,7 @@
 import database, { getEntityById } from "./db";
-import {collection,getDocs,addDoc, getDoc, deleteDoc} from "firebase/firestore";
+import {collection,getDocs,addDoc, getDoc, deleteDoc, updateDoc} from "firebase/firestore";
 import { v4 as uuidv4 } from 'uuid';
+import { Project } from "../models";
 
 export const getProject = async (projectId: string):Promise<Project|null> => {
     return await getEntityById('projects',projectId);
@@ -50,4 +51,18 @@ export const deleteDbProject = async (projectId:string): Promise<void | null> =>
     if(!docForDelete)
         return null;
     await deleteDoc(docForDelete.ref);  
+}
+
+export const updateDbProject = async (project:Project): Promise<Project | null> => {
+    const dbCollection = collection(database, 'projects')
+    if(!dbCollection)
+        return null;
+    const collectionDocs = await getDocs(dbCollection);
+    const searchedProject = collectionDocs.docs.filter(x=>x.data().id == project.id)[0]
+    if(!searchedProject)
+        return null;
+    for(let prop in project){
+        updateDoc(searchedProject.ref,prop,project[prop as keyof Project])
+    }
+    return await getProject(project.id)
 }

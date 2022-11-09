@@ -8,13 +8,17 @@
         <div>
           <input type="text" v-model="searchString" />
         </div>
-        <div
-          class="tag"
-          v-for="tag in searchedTags"
-          :key="tag.name"
-          :style="{ 'background-color': tag.color }"
-        >
-          {{ tag.name }}
+        <div class="tags">
+          <div
+            class="tags__item"
+            v-for="tag in searchedTags"
+            :key="tag.name"
+            :style="{ 'background-color': tag.color }"
+            :class="{'tags__item_selected': props.selected.filter(x=>x.name == tag.name)[0]}"
+            @click="setTag(tag)"
+          >
+            {{ tag.name }}
+          </div>
         </div>
       </div>
       <div class="card__body" v-if="action == items[1].value">
@@ -52,6 +56,7 @@ import { helpers, required } from "@vuelidate/validators";
 import { existed } from "../../vuelidate/customRules";
 import useVuelidate from "@vuelidate/core";
 import { TagActionTypes } from "../../store/modules/tags/actions-types";
+import { TAG_ACTIONS } from "../../helper/enums";
 //common
 const items: Tab[] = [
   {
@@ -63,7 +68,10 @@ const items: Tab[] = [
     value: 1,
   },
 ];
-const emits = defineEmits(["close","create"]);
+const props = defineProps<{
+  selected: Tag[]
+}>();
+const emits = defineEmits(["close", "create","updateTags"]);
 const action: Ref<number> = ref(0);
 const store = useStore();
 const close = () => {
@@ -78,6 +86,12 @@ const searchedTags = computed(() => {
     x.name.toString().toLowerCase().includes(searchString.value.toLowerCase())
   );
 });
+const setTag = (tag:Tag) => {
+  if(props.selected.filter(x=>x.name == tag.name)[0])
+    emits('updateTags',{tag,actions: TAG_ACTIONS.REMOVE_TAG})
+  else
+    emits('updateTags',{tag,action: TAG_ACTIONS.ADD_TAG})
+}
 //create
 const formRules = computed(() => {
   return {
@@ -86,7 +100,7 @@ const formRules = computed(() => {
       isExisted: helpers.withMessage(
         "Tag with this name already exist",
         existed(
-          tags.value.filter((x) => x.type == 'project').map((x) => x.name)
+          tags.value.filter((x) => x.type == "project").map((x) => x.name)
         )
       ),
     },
@@ -99,16 +113,16 @@ const form: {
 });
 const validator = useVuelidate(formRules, form);
 const color: Ref<string> = ref("#fff");
-const updateColor = (eventData) => {  
-    color.value = eventData.cssColor;
+const updateColor = (eventData) => {
+  color.value = eventData.cssColor;
 };
 const createTag = async () => {
   if (await validator.value.$validate()) {
-    emits('create',{
-      name:form.name,
-      color: color.value
-    })
-    emits('close')
+    emits("create", {
+      name: form.name,
+      color: color.value,
+    });
+    emits("close");
   }
 };
 </script>
@@ -123,14 +137,14 @@ const createTag = async () => {
   margin-top: 10px;
   border-radius: 4px;
 }
-.card__actions button{
+.card__actions button {
   height: 40px;
   width: 120px;
   background-color: rgb(2, 187, 2);
   font-size: 18px;
-  color:white
+  color: white;
 }
-.card__actions button:hover{
+.card__actions button:hover {
   background-color: rgb(1, 128, 1);
 }
 </style>

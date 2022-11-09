@@ -26,15 +26,19 @@
             v-if="tagSelector"
             @close="setTagSelector(false)"
             @create="createTag"
+            @updateTags="updateTags"
+            :selected="tags"
           ></tag-selector>
-          <template v-if="tags">
-            <div
+          <template v-if="tags" class="tags__block">
+            <tag-item
+              class="tags__item"
               v-for="tag in tags.filter((x) => x.type == 'project')"
+              :tag="tag"
+              :removable="true"
+              :selected="false"
               :key="tag.name"
-              :style="{ 'background-color': tag.color }"
-            >
-              {{ tag.name }}
-            </div>
+              @remove="remove(tag)"
+            ></tag-item>
           </template>
         </div>
       </div>
@@ -54,17 +58,25 @@ import IconPlus from "../Icons/IconPlus.vue";
 import { computed, ref, Ref } from "vue";
 import TagSelector from "../PopupViews/TagSelector.vue";
 import { TagActionTypes } from "../../store/modules/tags/actions-types";
+import { TAG_ACTIONS } from "../../helper/enums";
+import TagItem from "./TagItem.vue";
+import { updateProject } from "../../services/projectService";
+import { projects } from "../../store/modules/projects";
 const props = defineProps<{
   project: Project;
 }>();
 
 const store = useStore();
 const emits = defineEmits(["delete"]);
-const tags: Ref<Tag[]> = ref([]);
 const tagSelector: Ref<Boolean> = ref(false);
-const user = computed(()=> store.state.user.user)
+const user = computed(() => store.state.user.user);
 onMounted(() => {});
 
+const tags = computed(() => {
+  return store.state.tags.myTags.filter(
+    (x) => x.type == "project" && x.projectId == props.project.id
+  );
+});
 const openDeleteDialog = (event: MouseEvent) => {
   event.stopPropagation();
   emits("delete");
@@ -75,16 +87,26 @@ const setTagSelector = (value) => {
 const createTag = async (tagInfo: { color: string; name: string }) => {
   const tag: Tag = {
     color: tagInfo.color,
-    name:tagInfo.name,
-    type: 'project',
+    name: tagInfo.name,
+    type: "project",
     projectId: props.project.id,
-    userId: user.value?.userId as string
+    userId: user.value?.userId as string,
   };
-  await store.dispatch(TagActionTypes.CREATE_TAG,{tag})
+  await store.dispatch(TagActionTypes.CREATE_TAG, { tag });
 };
+const updateTags = (model: { tag: Tag; action: TAG_ACTIONS }) => {};
+const remove = (tag:Tag) => {
+  
+}
 </script>
 
 <style scoped>
+.tags__item{
+  margin-left: 2px;
+  display: flex;
+  align-items: center;
+  height: 30px;
+}
 .tags__add {
   cursor: pointer;
 }
